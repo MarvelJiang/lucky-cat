@@ -1,7 +1,8 @@
 <template>
   <div>
-    statistics
-    <Nav/>
+    <Layout>
+      statistics
+    </Layout>
   </div>
 </template>
 
