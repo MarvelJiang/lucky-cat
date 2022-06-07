@@ -2,9 +2,26 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  transition: all .3s;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button, input {
+  font-size: inherit;
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  outline: none;
+}
+
+:focus {
+  outline: none;
 }
