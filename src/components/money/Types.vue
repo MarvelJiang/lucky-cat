@@ -1,15 +1,27 @@
 <template>
   <div>
     <ul class="types">
-      <li class="selected">支出</li>
-      <li>收入</li>
+      <li :class="type === '支出' && 'selected'"
+          @click="selectType('支出')">支出
+      </li>
+      <li :class="type === '收入' && 'selected'"
+          @click="selectType('收入')">收入
+      </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: "types"
+import Vue from 'vue'
+import {Component} from "vue-property-decorator";
+
+@Component
+export default class Types extends Vue {
+  type = '支出';
+
+  selectType(type: string): void {
+    this.type = type
+  }
 }
 </script>
 
@@ -26,7 +38,7 @@ export default {
     width: 50%;
     padding-top: 12px;
     padding-bottom: 12px;
-    border-bottom: 4px $color;
+    border-bottom: 4px solid white;
 
     &.selected {
       border-bottom: 4px solid $color;
