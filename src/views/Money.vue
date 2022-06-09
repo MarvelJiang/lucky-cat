@@ -21,7 +21,8 @@ type Record = {
   choices: string,
   notes: string,
   types: string,
-  amount: string
+  amount: string,
+  createAt: Date | undefined,
 }
 
 @Component({
@@ -29,8 +30,8 @@ type Record = {
 })
 export default class Money extends Vue {
   choices = {"eat": "餐饮", "clothes": "服饰", "house": "房租", "bus": "交通"};
-  record: Record = {choices: '', notes: '', types: '支出', amount: '￥0'};
-  recordList: any = [];
+  record: any = {choices: '', notes: '', types: '支出', amount: '￥0'};
+  recordList: any = JSON.parse(window.localStorage.getItem('recordList') || '[]')
 
   onUpdateChoice(value: string) {
     this.record.choices = value
@@ -49,7 +50,8 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    const record2 = JSON.parse(JSON.stringify(this.record));
+    const record2: Record = JSON.parse(JSON.stringify(this.record));
+    record2.createAt = new Date();
     this.recordList.push(record2);
   }
 
