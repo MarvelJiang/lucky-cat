@@ -21,7 +21,7 @@
       <button @click="Back">
         <Icon name="back"/>
       </button>
-      <button class="send">完成</button>
+      <button class="send" @click="send">完成</button>
     </div>
   </div>
 </template>
@@ -74,6 +74,10 @@ export default class NumberPad extends Vue {
 
   Computer() {
     window.open('https://zaixianjisuanqi.bmcx.com/')
+  }
+
+  send() {
+    this.$emit('update:amount', this.output)
   }
 
 }

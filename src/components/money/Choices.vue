@@ -1,10 +1,13 @@
 <template>
   <div class="choices">
-    <div v-for="(key,value) in dataSource" :key="value" @click="Select(value)"
-         :class="selected === value && 'selected'">
-      <Icon :name="`${value}`"/>
-      <span>{{ key }}</span>
+    <div class="inner">
+      <div v-for="(key,value) in dataSource" :key="value" @click="Select(value)"
+           :class="selected === value && 'selected'">
+        <Icon :name="`${value}`"/>
+        <span>{{ key }}</span>
+      </div>
     </div>
+
     <!--    <div class="selected">-->
     <!--      <Icon name="eat"/>-->
     <!--      <span>餐饮</span>-->
@@ -33,10 +36,10 @@ export default class Choices extends Vue {
   selected = '';
   @Prop() dataSource: any;
 
-
   Select(value: string) {
     if (this.selected !== value) {
-      this.selected = value
+      this.selected = value;
+      this.$emit('update:choice', this.selected)
     } else {
       this.selected = ''
     }
@@ -49,34 +52,40 @@ export default class Choices extends Vue {
 @import "~@/assets/style/helper.scss";
 
 .choices {
-  display: flex;
-  flex-wrap: wrap;
   flex-grow: 1;
   margin-top: 30px;
-  padding-left: 4vw;
-  padding-right: 4vw;
   padding-top: 16px;
-  margin-right: -8vw;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-left: auto;
+  margin-right: auto;
 
-  > div {
-    border: 4px solid $color;
-    margin-top: 8px;
-    margin-right: 8vw;
-    padding: 8px;
-    height: 17vw;
-    width: 17vw;
-    border-radius: 50%;
+  > .inner {
+    width: 100vw;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0.7;
+    flex-wrap: wrap;
+    margin-right: -8vw;
 
-    &.selected {
-      border: 4px solid rgb(235, 101, 126);
-      opacity: 1;
+    > div {
+      border: 4px solid $color;
+      margin-top: 8px;
+      margin-right: 8vw;
+      padding: 8px;
+      height: 17vw;
+      width: 17vw;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0.7;
+
+      &.selected {
+        border: 4px solid rgb(235, 101, 126);
+        opacity: 1;
+      }
     }
   }
+
 }
 </style>
