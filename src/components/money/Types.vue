@@ -13,20 +13,26 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {Component, Watch} from "vue-property-decorator";
+import {Component, Prop} from "vue-property-decorator";
 
 @Component
 export default class Types extends Vue {
-  type = '支出';
+  @Prop() readonly type!: string;
 
-  selectType(type: string): void {
-    this.type = type
+  selectType(type: string) {
+    this.$emit('update:type', type)
   }
 
-  @Watch('type')
-  onTypeChanged(value: string) {
-    this.$emit('update:type', value)
-  }
+  // type = '支出';
+
+  // selectType(type: string): void {
+  //   this.type = type
+  // }
+
+  // @Watch('type')
+  // onTypeChanged(value: string) {
+  //   this.$emit('update:type', value)
+  // }
 
 }
 </script>
