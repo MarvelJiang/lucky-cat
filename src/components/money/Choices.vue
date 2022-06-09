@@ -1,31 +1,46 @@
 <template>
   <div class="choices">
-    <div class="selected">
-      <Icon name="eat"/>
-      <span>餐饮</span>
+    <div v-for="(key,value) in dataSource" :key="value" @click="Select(value)"
+         :class="selected === value && 'selected'">
+      <Icon :name="`${value}`"/>
+      <span>{{ key }}</span>
     </div>
-    <div>
-      <Icon name="clothes"/>
-      <span>服饰</span>
-    </div>
-    <div>
-      <Icon name="house"/>
-      <span>房租</span>
-    </div>
-    <div>
-      <Icon name="bus"/>
-      <span>交通</span>
-    </div>
-    <div>
-      <Icon name="add"/>
-      <span>添加</span>
-    </div>
+    <!--    <div class="selected">-->
+    <!--      <Icon name="eat"/>-->
+    <!--      <span>餐饮</span>-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <Icon name="clothes"/>-->
+    <!--      <span>服饰</span>-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <Icon name="house"/>-->
+    <!--      <span>房租</span>-->
+    <!--    </div>-->
+    <!--    <div>-->
+    <!--      <Icon name="bus"/>-->
+    <!--      <span>交通</span>-->
+    <!--    </div>-->
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: "choices"
+import Vue from 'vue'
+import {Component, Prop} from "vue-property-decorator";
+
+@Component
+export default class Choices extends Vue {
+  selected = '';
+  @Prop() dataSource: any;
+
+
+  Select(value: string) {
+    if (this.selected !== value) {
+      this.selected = value
+    } else {
+      this.selected = ''
+    }
+  }
 }
 </script>
 
@@ -38,16 +53,19 @@ export default {
   flex-wrap: wrap;
   flex-grow: 1;
   margin-top: 30px;
+  padding-left: 4vw;
+  padding-right: 4vw;
   padding-top: 16px;
+  margin-right: -8vw;
   overflow: auto;
 
   > div {
-    border: 2px solid $color;
-    margin-left: 24px;
+    border: 4px solid $color;
     margin-top: 8px;
+    margin-right: 8vw;
     padding: 8px;
-    height: 72px;
-    width: 72px;
+    height: 17vw;
+    width: 17vw;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -56,7 +74,7 @@ export default {
     opacity: 0.7;
 
     &.selected {
-      border: 2px solid rgb(235, 101, 126);
+      border: 4px solid rgb(235, 101, 126);
       opacity: 1;
     }
   }

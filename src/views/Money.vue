@@ -4,12 +4,12 @@
       <number-pad/>
       <types/>
       <notes/>
-      <choices/>
+      <choices :data-source="choices"/>
     </Layout>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 
 import Choices from "@/components/money/Choices.vue";
 import Notes from "@/components/money/Notes.vue";
@@ -19,6 +19,11 @@ import NumberPad from "@/components/money/NumberPad.vue";
 export default {
   name: "Money",
   components: {NumberPad, Types, Notes, Choices},
+  data() {
+    return {
+      choices: {"eat": "餐饮", "clothes": "服饰", "house": "房租", "bus": "交通"}
+    }
+  }
 }
 </script>
 

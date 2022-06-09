@@ -1,24 +1,24 @@
 <template>
   <div class="numberPad">
-    <div class="output">0元</div>
+    <div class="output">{{ output }}</div>
     <div class="buttons">
-      <button>7</button>
-      <button>8</button>
-      <button>9</button>
-      <button>
+      <button @click="InputNumber">7</button>
+      <button @click="InputNumber">8</button>
+      <button @click="InputNumber">9</button>
+      <button @click="Time">
         <Icon name="today"/>
       </button>
-      <button>4</button>
-      <button>5</button>
-      <button>6</button>
-      <button>+</button>
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <button>-</button>
-      <button>.</button>
-      <button>0</button>
-      <button>
+      <button @click="InputNumber">4</button>
+      <button @click="InputNumber">5</button>
+      <button @click="InputNumber">6</button>
+      <button @click="Remove">清除</button>
+      <button @click="InputNumber">1</button>
+      <button @click="InputNumber">2</button>
+      <button @click="InputNumber">3</button>
+      <button @click="Computer">计算器</button>
+      <button @click="InputNumber">.</button>
+      <button @click="InputNumber">0</button>
+      <button @click="Back">
         <Icon name="back"/>
       </button>
       <button class="send">完成</button>
@@ -27,8 +27,55 @@
 </template>
 
 <script lang="ts">
-export default {
-  name: "numberPad"
+import Vue from 'vue'
+import {Component} from "vue-property-decorator";
+
+@Component
+export default class NumberPad extends Vue {
+  output = '￥0';
+
+  InputNumber(event: PointerEvent) {
+    const button = event.target as HTMLButtonElement;
+    if (this.output.length === 19) {
+      return
+    }
+    if (this.output === '￥0') {
+      if (button.innerText === '.') {
+        this.output += '.'
+      } else {
+        this.output = '￥' + button.innerText
+      }
+      return
+    }
+    if (this.output.indexOf('.') >= 0 && button.innerText === '.') {
+      return
+    } else {
+      this.output += button.innerText
+    }
+
+  }
+
+  Time() {
+    const time = new Date();
+    window.alert(time.toLocaleDateString());
+  }
+
+  Remove() {
+    this.output = '￥0'
+  }
+
+  Back() {
+    if (this.output.length === 2) {
+      this.output = '￥0'
+    } else {
+      this.output = this.output.slice(0, -1)
+    }
+  }
+
+  Computer() {
+    window.open('https://zaixianjisuanqi.bmcx.com/')
+  }
+
 }
 </script>
 
@@ -40,7 +87,7 @@ export default {
   background: rgb(255, 203, 75, 0.5);
 
   > .output {
-    width: 50%;
+    width: 100%;
     margin-left: auto;
     font-size: 32px;
     font-family: Consolas, monospace;
@@ -52,6 +99,9 @@ export default {
     width: 100vw;
     display: flex;
     flex-wrap: wrap;
+    margin-right: auto;
+    margin-left: auto;
+    justify-content: space-between;
 
     > .send {
       background: rgb(255, 149, 155);
@@ -60,12 +110,11 @@ export default {
     > button {
       border: 1px solid $color;
       border-radius: 12px;
-      width: 80px;
-      height: 56px;
+      width: 21vw;
+      height: 6.5vh;
       font-size: 24px;
       background: white;
       margin-top: 8px;
-      margin-left: 20px;
       margin-bottom: 8px;
       box-shadow: inset 0px -4px $color;
     }
