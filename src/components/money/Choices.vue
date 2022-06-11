@@ -1,10 +1,10 @@
 <template>
   <div class="choices">
     <div class="inner">
-      <div v-for="(key,value) in dataSource" :key="value" @click="Select(value)"
-           :class="selected === value && 'selected'">
-        <Icon :name="`${value}`"/>
-        <span>{{ key }}</span>
+      <div v-for="item in dataSource" :key="item" @click="Select(item.id)"
+           :class="selected === item.id && 'selected'">
+        <Icon :name="`${item.id}`"/>
+        <span>{{ item.name }}</span>
       </div>
     </div>
 
