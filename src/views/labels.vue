@@ -5,7 +5,7 @@
     <div class="choices">
       <div class="inner">
         <div v-for="item in globalChoice" :key="item.id" @click="PushItem(item)"
-             :class="selectedItem.indexOf(item)>=0 && 'selected'">
+             :class="jungle(item) && 'selected'">
           <Icon :name="`${item.id}`"/>
           <span>{{ item.name }}</span>
         </div>
@@ -17,13 +17,13 @@
 <script lang="ts">
 
 import Vue from 'vue';
-import {Component, Prop} from "vue-property-decorator";
-import Money from "@/views/Money.vue";
+import {Component} from "vue-property-decorator";
 
 type ItemSelected = {
   id: string,
   name: string
 }
+
 
 @Component
 export default class labels extends Vue {
@@ -53,20 +53,41 @@ export default class labels extends Vue {
     name: '饮品'
   }, {id: 'star', name: '追星'}, {id: 'in', name: '入账'}, {id: 'others', name: '其他'}];
 
-  MyChoices = JSON.parse(window.localStorage.getItem('choicesItem') || '[{id: \'\', name: \'\'}]');
+  MyChoices = JSON.parse(window.localStorage.getItem('choicesItem') || `[{"id": "", "name": ""}]`);
 
   selectedItem: ItemSelected[] = this.MyChoices;
 
-  PushItem(value: ItemSelected) {
-    if (this.selectedItem.indexOf(value) === -1) {
-      this.selectedItem.push(value);
-      console.log(this.selectedItem);
-    } else {
-      const index = this.selectedItem.indexOf(value);
-      this.selectedItem.splice(index, 1);
-      console.log(this.selectedItem);
+  jungle(value: ItemSelected) {
+    let z: number
+    for (z = 0; z < this.selectedItem.length; z++) {
+      if (this.selectedItem[z].id === value.id) {
+        return true
+      }
     }
-    const choicesItem = JSON.stringify(this.selectedItem)
+  }
+
+  PushItem(value: ItemSelected) {
+    let i: number;
+    let index: undefined | number;
+    for (i = 0; i < this.selectedItem.length; i++) {
+      if (this.selectedItem[i].id === value.id) {
+        index = i
+      }
+    }
+    if (index) {
+      this.selectedItem.splice(index, 1);
+    } else {
+      this.selectedItem.push(value);
+    }
+    // if (this.selectedItem.indexOf(value) === -1) {
+    //   this.selectedItem.push(value);
+    //   console.log(this.selectedItem);
+    // } else {
+    //   const index = this.selectedItem.indexOf(value);
+    //   this.selectedItem.splice(index, 1);
+    //   console.log(this.selectedItem);
+    // }
+    const choicesItem = JSON.stringify(this.selectedItem);
     window.localStorage.setItem('choicesItem', choicesItem)
   }
 }

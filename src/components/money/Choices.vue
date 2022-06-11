@@ -1,7 +1,7 @@
 <template>
   <div class="choices">
     <div class="inner">
-      <div v-for="item in dataSource" :key="item" @click="Select(item.id)"
+      <div v-for="item in dataSource" :key="item.id" @click="Select(item.id)"
            :class="selected === item.id && 'selected'">
         <Icon :name="`${item.id}`"/>
         <span>{{ item.name }}</span>
