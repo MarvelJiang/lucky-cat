@@ -1,22 +1,29 @@
 <template>
-  <div>
-    <Layout>
-      <div class="choices">
-        <div class="inner">
-          <div v-for="item in globalChoice" :key="item">
-            <Icon :name="`${item.id}`"/>
-            <span>{{ item.name }}</span>
-          </div>
+  <Layout>
+    <h3>点击选择/取消标签</h3>
+    <hr>
+    <div class="choices">
+      <div class="inner">
+        <div v-for="item in globalChoice" :key="item.id" @click="PushItem(item)"
+             :class="selectedItem.indexOf(item)>=0 && 'selected'">
+          <Icon :name="`${item.id}`"/>
+          <span>{{ item.name }}</span>
         </div>
       </div>
-    </Layout>
-  </div>
+    </div>
+  </Layout>
 </template>
 
 <script lang="ts">
 
 import Vue from 'vue';
-import {Component} from "vue-property-decorator";
+import {Component, Prop} from "vue-property-decorator";
+import Money from "@/views/Money.vue";
+
+type ItemSelected = {
+  id: string,
+  name: string
+}
 
 @Component
 export default class labels extends Vue {
@@ -44,7 +51,24 @@ export default class labels extends Vue {
   }, {id: 'redbag', name: '红包'}, {id: 'kuaidi', name: '快递'}, {id: 'out', name: '还款'}, {
     id: 'drink',
     name: '饮品'
-  }, {id: 'star', name: '追星'}, {id: 'in', name: '入账'}, {id: 'others', name: '其他'}]
+  }, {id: 'star', name: '追星'}, {id: 'in', name: '入账'}, {id: 'others', name: '其他'}];
+
+  MyChoices = JSON.parse(window.localStorage.getItem('choicesItem') || '[{id: \'\', name: \'\'}]');
+
+  selectedItem: ItemSelected[] = this.MyChoices;
+
+  PushItem(value: ItemSelected) {
+    if (this.selectedItem.indexOf(value) === -1) {
+      this.selectedItem.push(value);
+      console.log(this.selectedItem);
+    } else {
+      const index = this.selectedItem.indexOf(value);
+      this.selectedItem.splice(index, 1);
+      console.log(this.selectedItem);
+    }
+    const choicesItem = JSON.stringify(this.selectedItem)
+    window.localStorage.setItem('choicesItem', choicesItem)
+  }
 }
 
 
@@ -55,14 +79,17 @@ export default class labels extends Vue {
 @import "~@/assets/style/reset.scss";
 @import "~@/assets/style/helper.scss";
 
+h3 {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
 .choices {
   flex-grow: 1;
-  margin-top: 30px;
   padding-top: 16px;
   overflow-x: hidden;
   overflow-y: auto;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 4vw;
 
   > .inner {
     width: 100vw;
@@ -82,10 +109,10 @@ export default class labels extends Vue {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      opacity: 0.7;
+      opacity: 0.5;
 
       &.selected {
-        border: 4px solid rgb(235, 101, 126);
+        background: #feffdb;
         opacity: 1;
       }
     }
