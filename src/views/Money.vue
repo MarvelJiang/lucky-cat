@@ -30,9 +30,10 @@ type RecordItem = {
   components: {NumberPad, Types, Notes, Choices},
 })
 export default class Money extends Vue {
-  choices = [{id: 'eat', name: '餐饮'}, {id: 'clothes', name: '服饰'}, {id: 'house', name: '住房'}, {id: 'bus', name: '交通'}];
+  MyChoices = model.fetch('choicesItem', `[{"id": "in", "name": "入账"}]`);
+  choices = this.MyChoices;
   record: RecordItem = {choices: '', notes: '', types: '支出', amount: '￥0', createAt: undefined};
-  recordList: RecordItem[] = model.fetch();
+  recordList: RecordItem[] = model.fetch('recordList', '[]');
 
   onUpdateChoice(value: string) {
     this.record.choices = value
@@ -58,7 +59,7 @@ export default class Money extends Vue {
 
   @Watch('recordList')
   onRecordListChanged() {
-    model.save(this.recordList)
+    model.save('recordList', this.recordList)
   }
 }
 

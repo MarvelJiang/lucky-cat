@@ -16,6 +16,7 @@
 
 <script lang="ts">
 
+import {model} from '@/model';
 import Vue from 'vue';
 import {Component} from "vue-property-decorator";
 
@@ -51,14 +52,14 @@ export default class labels extends Vue {
   }, {id: 'redbag', name: '红包'}, {id: 'kuaidi', name: '快递'}, {id: 'out', name: '还款'}, {
     id: 'drink',
     name: '饮品'
-  }, {id: 'star', name: '追星'}, {id: 'in', name: '入账'}, {id: 'others', name: '其他'}];
+  }, {id: 'star', name: '追星'}, {id: 'others', name: '其他'}];
 
-  MyChoices = JSON.parse(window.localStorage.getItem('choicesItem') || `[{"id": "", "name": ""}]`);
+  MyChoices = model.fetch('choicesItem', `[{"id": "in", "name": "入账"}]`);
 
-  selectedItem: ItemSelected[] = this.MyChoices;
+  selectedItem = this.MyChoices;
 
   jungle(value: ItemSelected) {
-    let z: number
+    let z: number;
     for (z = 0; z < this.selectedItem.length; z++) {
       if (this.selectedItem[z].id === value.id) {
         return true
@@ -87,8 +88,8 @@ export default class labels extends Vue {
     //   this.selectedItem.splice(index, 1);
     //   console.log(this.selectedItem);
     // }
-    const choicesItem = JSON.stringify(this.selectedItem);
-    window.localStorage.setItem('choicesItem', choicesItem)
+    const choicesItem = model.clone(this.selectedItem);
+    model.save('choicesItem', choicesItem)
   }
 }
 

@@ -6,16 +6,20 @@ type RecordItem = {
     createAt: Date | undefined,
 }
 
-const localStorageKeyName = 'recordList';
+type ItemSelected = {
+    id: string,
+    name: string
+}
+
 const model = {
-    clone(data: RecordItem) {
+    clone(data: RecordItem | ItemSelected) {
         return JSON.parse(JSON.stringify(data))
     },
-    fetch() {
-        return JSON.parse(window.localStorage.getItem(localStorageKeyName) || '[]') as RecordItem[];
+    fetch(localStorageName: string, baseItem: string) {
+        return JSON.parse(window.localStorage.getItem(localStorageName) || baseItem);
     },
-    save(data: RecordItem[]) {
-        window.localStorage.setItem(localStorageKeyName, JSON.stringify(data))
+    save(localStorageName: string, data: RecordItem[] | ItemSelected[]) {
+        window.localStorage.setItem(localStorageName, JSON.stringify(data))
     }
 };
 
