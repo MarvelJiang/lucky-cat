@@ -54,9 +54,8 @@ export default class labels extends Vue {
     name: '饮品'
   }, {id: 'star', name: '追星'}, {id: 'others', name: '其他'}];
 
-  MyChoices = model.fetch('choicesItem', `[{"id": "in", "name": "入账"}]`);
 
-  selectedItem = this.MyChoices;
+  selectedItem = window.MyChoices;
 
   jungle(value: ItemSelected) {
     let z: number;

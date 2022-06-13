@@ -30,8 +30,8 @@ type RecordItem = {
   components: {NumberPad, Types, Notes, Choices},
 })
 export default class Money extends Vue {
-  MyChoices = model.fetch('choicesItem', `[{"id": "in", "name": "入账"}]`);
-  choices = this.MyChoices;
+
+  choices = window.MyChoices;
   record: RecordItem = {choices: '', notes: '', types: '支出', amount: '￥0', createAt: undefined};
   recordList: RecordItem[] = model.fetch('recordList', '[]');
 
