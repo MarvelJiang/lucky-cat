@@ -67,28 +67,29 @@ export default class labels extends Vue {
   }
 
   PushItem(value: ItemSelected) {
-    let i: number;
-    let index: undefined | number;
-    for (i = 0; i < this.selectedItem.length; i++) {
-      if (this.selectedItem[i].id === value.id) {
-        index = i
-      }
-    }
-    if (index) {
-      this.selectedItem.splice(index, 1);
-    } else {
-      this.selectedItem.push(value);
-    }
-    // if (this.selectedItem.indexOf(value) === -1) {
-    //   this.selectedItem.push(value);
-    //   console.log(this.selectedItem);
-    // } else {
-    //   const index = this.selectedItem.indexOf(value);
-    //   this.selectedItem.splice(index, 1);
-    //   console.log(this.selectedItem);
+    window.pushItem(value);
+    // let i: number;
+    // let index: undefined | number;
+    // for (i = 0; i < this.selectedItem.length; i++) {
+    //   if (this.selectedItem[i].id === value.id) {
+    //     index = i
+    //   }
     // }
-    const choicesItem = model.clone(this.selectedItem);
-    model.save('choicesItem', choicesItem)
+    // if (index) {
+    //   this.selectedItem.splice(index, 1);
+    // } else {
+    //   this.selectedItem.push(value);
+    // }
+    // // if (this.selectedItem.indexOf(value) === -1) {
+    // //   this.selectedItem.push(value);
+    // //   console.log(this.selectedItem);
+    // // } else {
+    // //   const index = this.selectedItem.indexOf(value);
+    // //   this.selectedItem.splice(index, 1);
+    // //   console.log(this.selectedItem);
+    // // }
+    // const choicesItem = model.clone(this.selectedItem);
+    // model.save('choicesItem', choicesItem)
   }
 }
 

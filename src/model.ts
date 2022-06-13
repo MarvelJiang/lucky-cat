@@ -12,7 +12,7 @@ type ItemSelected = {
 }
 
 const model = {
-    clone(data: RecordItem | ItemSelected) {
+    clone(data: any) {
         return JSON.parse(JSON.stringify(data))
     },
     fetch(localStorageName: string, baseItem: string) {

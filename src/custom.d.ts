@@ -4,5 +4,6 @@ type ItemSelected = {
 }
 
 interface Window {
-    MyChoices: ItemSelected[]
+    MyChoices: ItemSelected[],
+    pushItem: (value: ItemSelected) => void
 }
