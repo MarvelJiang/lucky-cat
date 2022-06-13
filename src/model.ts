@@ -1,3 +1,5 @@
+import clone from "@/lib/clone";
+
 type RecordItem = {
     choices: string,
     notes: string,
@@ -12,13 +14,15 @@ type ItemSelected = {
 }
 
 const model = {
-    clone(data: any) {
-        return JSON.parse(JSON.stringify(data))
+    saveRecord(record: RecordItem) {
+        const record2 = clone(record);
+        record2.createAt = new Date();
+        return record2
     },
     fetch(localStorageName: string, baseItem: string) {
         return JSON.parse(window.localStorage.getItem(localStorageName) || baseItem);
     },
-    save(localStorageName: string, data: RecordItem[] | ItemSelected[]) {
+    save(localStorageName: string, data: RecordItem[]) {
         window.localStorage.setItem(localStorageName, JSON.stringify(data))
     }
 };

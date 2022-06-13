@@ -16,9 +16,9 @@
 
 <script lang="ts">
 
-import {model} from '@/model';
 import Vue from 'vue';
 import {Component} from "vue-property-decorator";
+import store from "@/store/index2";
 
 type ItemSelected = {
   id: string,
@@ -55,7 +55,7 @@ export default class labels extends Vue {
   }, {id: 'star', name: '追星'}, {id: 'others', name: '其他'}];
 
 
-  selectedItem = window.MyChoices;
+  selectedItem = store.MyChoices;
 
   jungle(value: ItemSelected) {
     let z: number;
@@ -67,7 +67,7 @@ export default class labels extends Vue {
   }
 
   PushItem(value: ItemSelected) {
-    window.pushItem(value);
+    store.pushItem(value);
     // let i: number;
     // let index: undefined | number;
     // for (i = 0; i < this.selectedItem.length; i++) {

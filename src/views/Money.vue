@@ -16,7 +16,8 @@ import Notes from "@/components/money/Notes.vue";
 import Types from "@/components/money/Types.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
 import {Component, Watch} from "vue-property-decorator";
-import {model} from "@/model";
+
+import store from "@/store/index2";
 
 type RecordItem = {
   choices: string,
@@ -31,9 +32,9 @@ type RecordItem = {
 })
 export default class Money extends Vue {
 
-  choices = window.MyChoices;
+  choices = store.MyChoices;
   record: RecordItem = {choices: '', notes: '', types: '支出', amount: '￥0', createAt: undefined};
-  recordList: RecordItem[] = model.fetch('recordList', '[]');
+  recordList = store.recordList;
 
   onUpdateChoice(value: string) {
     this.record.choices = value
@@ -52,14 +53,12 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    const record2: RecordItem = model.clone(this.record);
-    record2.createAt = new Date();
-    this.recordList.push(record2);
+    this.recordList.push(store.saveRecord(this.record));
   }
 
   @Watch('recordList')
   onRecordListChanged() {
-    model.save('recordList', this.recordList)
+    store.save('recordList', this.recordList)
   }
 }
 
