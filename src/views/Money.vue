@@ -17,7 +17,6 @@ import Types from "@/components/money/Types.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
 import {Component, Watch} from "vue-property-decorator";
 
-import store from "@/store/index2";
 
 type RecordItem = {
   choices: string,
@@ -29,12 +28,25 @@ type RecordItem = {
 
 @Component({
   components: {NumberPad, Types, Notes, Choices},
+  computed: {
+    recordList() {
+      return this.$store.state.recordList
+    },
+    choices() {
+      return this.$store.state.myChoices
+    },
+    newRecord() {
+      return this.$store.state.newRecord
+    }
+  }
 })
 export default class Money extends Vue {
-
-  choices = store.MyChoices;
   record: RecordItem = {choices: '', notes: '', types: '支出', amount: '￥0', createAt: undefined};
-  recordList = store.recordList;
+
+  created() {
+    this.$store.commit('fetchRecordList');
+    this.$store.commit('fetchMyChoices')
+  }
 
   onUpdateChoice(value: string) {
     this.record.choices = value
@@ -53,12 +65,12 @@ export default class Money extends Vue {
   }
 
   saveRecord() {
-    this.recordList.push(store.saveRecord(this.record));
+    this.$store.commit('saveRecord', this.record);
   }
 
   @Watch('recordList')
   onRecordListChanged() {
-    store.save('recordList', this.recordList)
+    this.$store.commit('saveRecordList')
   }
 }
 

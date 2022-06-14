@@ -1,5 +1,5 @@
-function save(localStorageName: string, data: RecordItem[]) {
-    window.localStorage.setItem(localStorageName, JSON.stringify(data))
+function save(data: RecordItem[]) {
+    window.localStorage.setItem('recordList', JSON.stringify(data))
 }
 
 export default save;

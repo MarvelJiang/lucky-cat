@@ -18,7 +18,7 @@
 
 import Vue from 'vue';
 import {Component} from "vue-property-decorator";
-import store from "@/store/index2";
+
 
 type ItemSelected = {
   id: string,
@@ -28,6 +28,10 @@ type ItemSelected = {
 
 @Component
 export default class labels extends Vue {
+  get selectedItem() {
+    return this.$store.state.myChoices
+  }
+
   globalChoice = [{id: 'eat', name: '餐饮'}, {id: 'clothes', name: '服饰'}, {id: 'house', name: '住房'}, {
     id: 'bus',
     name: '交通'
@@ -54,8 +58,9 @@ export default class labels extends Vue {
     name: '饮品'
   }, {id: 'star', name: '追星'}, {id: 'others', name: '其他'}];
 
-
-  selectedItem = store.MyChoices;
+  created() {
+    this.$store.commit('fetchMyChoices');
+  }
 
   jungle(value: ItemSelected) {
     let z: number;
@@ -67,7 +72,7 @@ export default class labels extends Vue {
   }
 
   PushItem(value: ItemSelected) {
-    store.pushItem(value);
+    this.$store.commit('pushItem', value);
     // let i: number;
     // let index: undefined | number;
     // for (i = 0; i < this.selectedItem.length; i++) {

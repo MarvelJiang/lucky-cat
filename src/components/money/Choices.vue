@@ -7,23 +7,6 @@
         <span>{{ item.name }}</span>
       </div>
     </div>
-
-    <!--    <div class="selected">-->
-    <!--      <Icon name="eat"/>-->
-    <!--      <span>餐饮</span>-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <Icon name="clothes"/>-->
-    <!--      <span>服饰</span>-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <Icon name="house"/>-->
-    <!--      <span>房租</span>-->
-    <!--    </div>-->
-    <!--    <div>-->
-    <!--      <Icon name="bus"/>-->
-    <!--      <span>交通</span>-->
-    <!--    </div>-->
   </div>
 </template>
 
