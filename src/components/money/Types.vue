@@ -1,10 +1,12 @@
 <template>
   <div>
     <ul class="types">
-      <li :class="type === '支出' && 'selected'"
+      <li :class="{selected:type === '支出',
+      [classPrefix+'-item']:classPrefix}"
           @click="selectType('支出')">支出
       </li>
-      <li :class="type === '收入' && 'selected'"
+      <li :class="{selected:type === '收入',
+      [classPrefix+'-item']:classPrefix}"
           @click="selectType('收入')">收入
       </li>
     </ul>
@@ -18,22 +20,11 @@ import {Component, Prop} from "vue-property-decorator";
 @Component
 export default class Types extends Vue {
   @Prop() readonly type!: string;
+  @Prop() classPrefix?: string;
 
   selectType(type: string) {
     this.$emit('update:type', type)
   }
-
-  // type = '支出';
-
-  // selectType(type: string): void {
-  //   this.type = type
-  // }
-
-  // @Watch('type')
-  // onTypeChanged(value: string) {
-  //   this.$emit('update:type', value)
-  // }
-
 }
 </script>
 
