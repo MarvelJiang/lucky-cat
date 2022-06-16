@@ -1,12 +1,14 @@
 <template>
   <Layout>
     <Types classPrefix="statistics" :type.sync="type"/>
-    <ol>
+    <ol class="container">
       <li v-for="(group,index) in result" :key="index">
-        <h3>{{ group.title }}</h3>
+        <h3 class="title">{{ group.title }}</h3>
         <ol>
-          <li v-for="item in group.items" :key="item.createAt">
-            {{ item.amount }} {{ item.createAt }}
+          <li v-for="item in group.items" :key="item.createAt" class="record">
+            <span class="tag">{{ getTag(item.choices) || '无' }}</span>
+            <span class="note">{{ item.notes }}</span>
+            <span>￥{{ item.amount }}</span>
           </li>
         </ol>
       </li>
@@ -15,6 +17,7 @@
 </template>
 
 <script lang="ts">
+
 
 import Types from "@/components/money/Types.vue";
 import Vue from "vue";
@@ -37,6 +40,32 @@ type HashTableValue = {
   components: {Types}
 })
 export default class Statistics extends Vue {
+  globalChoice2 = [{id: 'eat', name: '餐饮'}, {id: 'clothes', name: '服饰'}, {id: 'house', name: '住房'}, {
+    id: 'bus',
+    name: '交通'
+  }, {id: 'life', name: '日用'}, {id: 'vegetable', name: '蔬菜'}, {id: 'fruit', name: '水果'}, {
+    id: 'food',
+    name: '零食'
+  }, {id: 'sport', name: '运动'}, {id: 'fun', name: '娱乐'}, {id: 'call', name: '通讯'}, {
+    id: 'beauty',
+    name: '美容'
+  }, {id: 'family', name: '家庭'}, {id: 'friend', name: '社交'}, {id: 'travel', name: '旅行'}, {
+    id: 'smoke',
+    name: '烟酒'
+  }, {id: 'camera', name: '数码'}, {id: 'cars', name: '汽车'}, {id: 'hospital', name: '医疗'}, {
+    id: 'book',
+    name: '书籍'
+  }, {id: 'study', name: '学习'}, {id: 'cat', name: '宠物'}, {id: 'lijin', name: '礼金'}, {
+    id: 'gift',
+    name: '礼品'
+  }, {id: 'computer', name: '办公'}, {id: 'repair', name: '维修'}, {id: 'help', name: '捐赠'}, {
+    id: 'money',
+    name: '彩票'
+  }, {id: 'redbag', name: '红包'}, {id: 'kuaidi', name: '快递'}, {id: 'out', name: '还款'}, {
+    id: 'drink',
+    name: '饮品'
+  }, {id: 'star', name: '追星'}, {id: 'others', name: '其他'}, {id: 'in', name: '入账'}];
+
   get recordList() {
     return this.$store.state.recordList as RecordItem[];
   }
@@ -46,12 +75,19 @@ export default class Statistics extends Vue {
     const hashTable: { [key: string]: HashTableValue } = {};
     for (let i = 0; i < recordList.length; i++) {
       const [date, time] = recordList[i].createAt!.split('T');
-      console.log(date);
       hashTable[date] = hashTable[date] || {title: date, items: []};
       hashTable[date].items.push(recordList[i])
     }
-    console.log(hashTable);
     return hashTable
+  }
+
+  getTag(choices: string) {
+    const {globalChoice2} = this;
+    for (let i = 0; i < globalChoice2.length; i++) {
+      if (choices === globalChoice2[i].id) {
+        return globalChoice2[i].name
+      }
+    }
   }
 
   beforeCreate() {
@@ -73,5 +109,38 @@ export default class Statistics extends Vue {
     border-bottom: 4px solid $color;
   }
 }
+
+
+.title {
+  background: rgb(255, 203, 75, 0.5);
+  font-size: 24px;
+  padding-left: 8px;
+}
+
+.record {
+  font-size: 20px;
+  border-bottom: 1px solid $color;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.tag {
+  margin-right: 8px;
+  white-space: nowrap;
+}
+
+.note {
+  opacity: .7;
+  margin-right: auto;
+  overflow-x: auto;
+}
+
+.container {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 
 </style>

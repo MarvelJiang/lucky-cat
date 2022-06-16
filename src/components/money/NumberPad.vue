@@ -76,11 +76,15 @@ export default class NumberPad extends Vue {
     window.open('https://zaixianjisuanqi.bmcx.com/')
   }
 
+  fresh() {
+    this.$router.push('/statistics')
+  }
+
   send() {
     this.$emit('update:amount', this.output);
     this.$emit('submit', this.output);
     this.output = '0';
-    this.$router.push('/statistics')
+    setTimeout(this.fresh, 0)
   }
 
 }
