@@ -69,11 +69,10 @@ export default class Statistics extends Vue {
 
   get result() {
     const {recordList} = this;
-    const hashTable: {
-      title: string,
-      items: RecordItem[]
-    }[] = [];
     const newList = clone(recordList).sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
+    if (newList.length === 0) {
+      return []
+    }
     const baseList = [{title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), items: [newList[0]]}];
     for (let i = 1; i < newList.length; i++) {
       const current = newList[i];
@@ -84,7 +83,6 @@ export default class Statistics extends Vue {
         baseList.push({title: dayjs(newList[i].createAt).format('YYYY-MM-DD'), items: [current]})
       }
     }
-    console.log(baseList);
     return baseList
   }
 
