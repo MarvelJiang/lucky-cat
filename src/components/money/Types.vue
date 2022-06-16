@@ -41,7 +41,7 @@ export default class Types extends Vue {
     width: 50%;
     padding-top: 12px;
     padding-bottom: 12px;
-    border-bottom: 4px solid white;
+    border-bottom: 4px solid transparent;
 
     &.selected {
       border-bottom: 4px solid $color;

@@ -1,6 +1,6 @@
 <template>
   <div class="numberPad">
-    <div class="output">{{ output }}</div>
+    <div class="output"><span>￥{{ output }}</span></div>
     <div class="buttons">
       <button @click="InputNumber">7</button>
       <button @click="InputNumber">8</button>
@@ -32,18 +32,18 @@ import {Component} from "vue-property-decorator";
 
 @Component
 export default class NumberPad extends Vue {
-  output = '￥0';
+  output = '0';
 
   InputNumber(event: PointerEvent) {
     const button = event.target as HTMLButtonElement;
     if (this.output.length === 19) {
       return
     }
-    if (this.output === '￥0') {
+    if (this.output === '0') {
       if (button.innerText === '.') {
         this.output += '.'
       } else {
-        this.output = '￥' + button.innerText
+        this.output = button.innerText
       }
       return
     }
@@ -61,12 +61,12 @@ export default class NumberPad extends Vue {
   }
 
   Remove() {
-    this.output = '￥0'
+    this.output = '0'
   }
 
   Back() {
-    if (this.output.length === 2) {
-      this.output = '￥0'
+    if (this.output.length === 1) {
+      this.output = '0'
     } else {
       this.output = this.output.slice(0, -1)
     }
@@ -79,7 +79,7 @@ export default class NumberPad extends Vue {
   send() {
     this.$emit('update:amount', this.output);
     this.$emit('submit', this.output);
-    this.output = '￥0'
+    this.output = '0'
   }
 
 }
