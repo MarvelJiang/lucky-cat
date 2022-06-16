@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Types classPrefix="statistics" :type.sync="type"/>
-    <ol class="container">
+    <ol>
       <li v-for="(group,index) in result" :key="index">
         <h3 class="title">{{ beautify(group.title) }}</h3>
         <ol>
@@ -23,6 +23,7 @@ import Types from "@/components/money/Types.vue";
 import Vue from "vue";
 import {Component} from "vue-property-decorator";
 import dayjs from "dayjs";
+import clone from "@/lib/clone";
 
 type RecordItem = {
   choices: string,
@@ -30,11 +31,6 @@ type RecordItem = {
   types: string,
   amount: string,
   createAt: string | undefined,
-}
-
-type HashTableValue = {
-  title: string,
-  items: RecordItem[]
 }
 
 @Component({
@@ -73,13 +69,23 @@ export default class Statistics extends Vue {
 
   get result() {
     const {recordList} = this;
-    const hashTable: { [key: string]: HashTableValue } = {};
-    for (let i = 0; i < recordList.length; i++) {
-      const [date, time] = recordList[i].createAt!.split('T');
-      hashTable[date] = hashTable[date] || {title: date, items: []};
-      hashTable[date].items.push(recordList[i])
+    const hashTable: {
+      title: string,
+      items: RecordItem[]
+    }[] = [];
+    const newList = clone(recordList).sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
+    const baseList = [{title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), items: [newList[0]]}];
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = baseList[baseList.length - 1];
+      if (dayjs(last.title).isSame(dayjs(current.createAt), 'day')) {
+        last.items.push(current)
+      } else {
+        baseList.push({title: dayjs(newList[i].createAt).format('YYYY-MM-DD'), items: [current]})
+      }
     }
-    return hashTable
+    console.log(baseList);
+    return baseList
   }
 
   getTag(choices: string) {
@@ -152,11 +158,4 @@ export default class Statistics extends Vue {
   margin-right: auto;
   overflow-x: auto;
 }
-
-.container {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-
 </style>
