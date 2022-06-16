@@ -29,6 +29,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Component} from "vue-property-decorator";
+import dayjs from "dayjs";
 
 @Component
 export default class NumberPad extends Vue {
@@ -56,8 +57,8 @@ export default class NumberPad extends Vue {
   }
 
   Time() {
-    const time = new Date();
-    window.alert(time.toLocaleDateString());
+    const time = dayjs(new Date()).format('YYYY年MM月DD日') + '星期' + dayjs(new Date()).get('day');
+    window.alert('今天是：' + time);
   }
 
   Remove() {
