@@ -22,7 +22,7 @@ type RecordItem = {
   choices: string,
   notes: string,
   types: string,
-  amount: string,
+  amount: number,
   createAt: string | undefined,
 }
 
@@ -41,7 +41,7 @@ type RecordItem = {
   }
 })
 export default class Money extends Vue {
-  record: RecordItem = {choices: '', notes: '', types: '支出', amount: '￥0', createAt: undefined};
+  record: RecordItem = {choices: '', notes: '', types: '支出', amount: 0, createAt: undefined};
 
   created() {
     this.$store.commit('fetchRecordList');
@@ -61,7 +61,7 @@ export default class Money extends Vue {
   }
 
   onUpdateAmount(value: string) {
-    this.record.amount = value
+    this.record.amount = parseFloat(value)
   }
 
   saveRecord() {

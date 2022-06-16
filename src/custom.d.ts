@@ -7,7 +7,7 @@ type RecordItem = {
     choices: string,
     notes: string,
     types: string,
-    amount: string,
+    amount: number,
     createAt: string | undefined,
 }
 

@@ -2,8 +2,8 @@
   <Layout>
     <Types classPrefix="statistics" :type.sync="type"/>
     <ol>
-      <li v-for="(group,index) in result" :key="index">
-        <h3 class="title">{{ beautify(group.title) }}</h3>
+      <li v-for="(group,index) in groupList" :key="index">
+        <h3 class="title">{{ beautify(group.title) }} <span class="total">￥{{ group.total }}</span></h3>
         <ol>
           <li v-for="item in group.items" :key="item.createAt" class="record">
             <span class="tag">{{ getTag(item.choices) || '无' }}</span>
@@ -29,9 +29,11 @@ type RecordItem = {
   choices: string,
   notes: string,
   types: string,
-  amount: string,
+  amount: number,
   createAt: string | undefined,
 }
+
+type Result = { title: string, total?: number, items: RecordItem[] }[]
 
 @Component({
   components: {Types}
@@ -67,23 +69,30 @@ export default class Statistics extends Vue {
     return this.$store.state.recordList as RecordItem[];
   }
 
-  get result() {
+  get groupList() {
     const {recordList} = this;
-    const newList = clone(recordList).sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
+    const newList = clone(recordList).filter(r => r.types === this.type).sort((a, b) => dayjs(b.createAt).valueOf() - dayjs(a.createAt).valueOf());
     if (newList.length === 0) {
       return []
     }
-    const baseList = [{title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), items: [newList[0]]}];
+    const result: Result = [{title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), items: [newList[0]]}];
     for (let i = 1; i < newList.length; i++) {
       const current = newList[i];
-      const last = baseList[baseList.length - 1];
+      const last = result[result.length - 1];
       if (dayjs(last.title).isSame(dayjs(current.createAt), 'day')) {
         last.items.push(current)
       } else {
-        baseList.push({title: dayjs(newList[i].createAt).format('YYYY-MM-DD'), items: [current]})
+        result.push({title: dayjs(newList[i].createAt).format('YYYY-MM-DD'), items: [current]})
       }
     }
-    return baseList
+    result.map(group => {
+      group.total = group.items.reduce((sum, item) => {
+        console.log(sum);
+        console.log(item);
+        return sum + item.amount;
+      }, 0);
+    });
+    return result
   }
 
   getTag(choices: string) {
@@ -155,5 +164,14 @@ export default class Statistics extends Vue {
   opacity: .7;
   margin-right: auto;
   overflow-x: auto;
+}
+
+h3 {
+  display: flex;
+  justify-content: space-between;
+
+  .total {
+    margin-right: 8px;
+  }
 }
 </style>
