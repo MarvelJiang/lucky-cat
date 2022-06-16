@@ -10,7 +10,6 @@ const store = new Vuex.Store({
         recordList: [] as RecordItem[],
         newRecord: [],
         myChoices: [] as ItemSelected[],
-        show: false
     },
     mutations: {
         fetchMyChoices(state) {
@@ -21,7 +20,7 @@ const store = new Vuex.Store({
         },
         saveRecord(state, record) {
             const record2 = clone(record);
-            record2.createAt = new Date();
+            record2.createAt = new Date().toISOString();
             state.recordList.push(record2);
         },
         saveRecordList(state) {

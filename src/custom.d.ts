@@ -8,7 +8,7 @@ type RecordItem = {
     notes: string,
     types: string,
     amount: string,
-    createAt: Date | undefined,
+    createAt: string | undefined,
 }
 
 interface Window {
