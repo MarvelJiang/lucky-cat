@@ -81,10 +81,14 @@ export default class NumberPad extends Vue {
   }
 
   send() {
-    this.$emit('update:amount', this.output);
-    this.$emit('submit', this.output);
-    this.output = '0';
-    setTimeout(this.fresh, 0)
+    if (this.output === '0') {
+      return
+    } else {
+      this.$emit('update:amount', this.output);
+      this.$emit('submit', this.output);
+      this.output = '0';
+      setTimeout(this.fresh, 0)
+    }
   }
 
 }

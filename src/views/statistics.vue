@@ -3,7 +3,7 @@
     <Types classPrefix="statistics" :type.sync="type"/>
     <ol class="container">
       <li v-for="(group,index) in result" :key="index">
-        <h3 class="title">{{ group.title }}</h3>
+        <h3 class="title">{{ beautify(group.title) }}</h3>
         <ol>
           <li v-for="item in group.items" :key="item.createAt" class="record">
             <span class="tag">{{ getTag(item.choices) || '无' }}</span>
@@ -22,6 +22,7 @@
 import Types from "@/components/money/Types.vue";
 import Vue from "vue";
 import {Component} from "vue-property-decorator";
+import dayjs from "dayjs";
 
 type RecordItem = {
   choices: string,
@@ -87,6 +88,21 @@ export default class Statistics extends Vue {
       if (choices === globalChoice2[i].id) {
         return globalChoice2[i].name
       }
+    }
+  }
+
+  beautify(value: string) {
+    const now = dayjs();
+    const day = dayjs(value);
+    if (dayjs(value).isSame(now, 'day')) {
+      value = day.format('YYYY年MM月DD日');
+      return value + '(今天)';
+    } else if (dayjs(value).isSame(now.subtract(1, "day"), 'day')) {
+      value = day.format('YYYY年MM月DD日');
+      return value + '(昨天)';
+    } else {
+      value = day.format('YYYY年MM月DD日');
+      return value
     }
   }
 
