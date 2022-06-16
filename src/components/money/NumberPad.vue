@@ -79,7 +79,8 @@ export default class NumberPad extends Vue {
   send() {
     this.$emit('update:amount', this.output);
     this.$emit('submit', this.output);
-    this.output = '0'
+    this.output = '0';
+    this.$router.push('/statistics')
   }
 
 }
