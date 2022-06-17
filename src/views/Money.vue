@@ -1,7 +1,7 @@
 <template>
   <div>
     <Layout class-pre-fix="money">
-      <number-pad @update:amount="onUpdateAmount" @submit="saveRecord"/>
+      <number-pad :tag="record.choices" @update:amount="onUpdateAmount" @submit="saveRecord"/>
       <types :type="record.types" @update:type="onUpdateType"/>
       <notes @update:note="onUpdateNote"/>
       <choices :data-source="choices" @update:choice="onUpdateChoice"/>
@@ -15,7 +15,7 @@ import Choices from "@/components/money/Choices.vue";
 import Notes from "@/components/money/Notes.vue";
 import Types from "@/components/money/Types.vue";
 import NumberPad from "@/components/money/NumberPad.vue";
-import {Component, Watch} from "vue-property-decorator";
+import {Component, Prop, Watch} from "vue-property-decorator";
 
 
 type RecordItem = {
@@ -41,6 +41,7 @@ type RecordItem = {
   }
 })
 export default class Money extends Vue {
+
   record: RecordItem = {choices: '', notes: '', types: '支出', amount: 0, createAt: undefined};
 
   created() {

@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <Types classPrefix="statistics" :type.sync="type"/>
-    <ol>
+    <ol v-if="groupList.length > 0">
       <li v-for="(group,index) in groupList" :key="index">
         <h3 class="title">{{ beautify(group.title) }} <span class="total">￥{{ group.total }}</span></h3>
         <ol>
@@ -13,6 +13,9 @@
         </ol>
       </li>
     </ol>
+    <div v-else>
+      暂未生成账单~
+    </div>
   </Layout>
 </template>
 

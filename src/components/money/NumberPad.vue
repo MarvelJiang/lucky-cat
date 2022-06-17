@@ -28,11 +28,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {Component} from "vue-property-decorator";
+import {Component, Prop} from "vue-property-decorator";
 import dayjs from "dayjs";
 
 @Component
 export default class NumberPad extends Vue {
+  @Prop() tag?: string;
+
   output = '0';
 
   InputNumber(event: PointerEvent) {
@@ -78,7 +80,11 @@ export default class NumberPad extends Vue {
   }
 
   fresh() {
-    this.$router.push('/statistics')
+    if (this.tag === '') {
+      window.alert('请选择一个标签')
+    } else {
+      this.$router.push('/statistics')
+    }
   }
 
   send() {
