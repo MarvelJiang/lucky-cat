@@ -5,10 +5,11 @@
       <li v-for="(group,index) in groupList" :key="index">
         <h3 class="title">{{ beautify(group.title) }} <span class="total">￥{{ group.total }}</span></h3>
         <ol>
-          <li v-for="item in group.items" :key="item.createAt" class="record">
+          <li v-for="item in group.items" :key="item.createAt"
+              class="record" @touchstart="start" @touchend="end">
             <span class="tag">{{ getTag(item.choices) || '无' }}</span>
             <span class="note">{{ item.notes }}</span>
-            <span>￥{{ item.amount }}</span>
+            <span :ownValue="item.createAt">￥{{ item.amount }}</span>
           </li>
         </ol>
       </li>
@@ -90,8 +91,6 @@ export default class Statistics extends Vue {
     }
     result.map(group => {
       group.total = group.items.reduce((sum, item) => {
-        console.log(sum);
-        console.log(item);
         return sum + item.amount;
       }, 0);
     });
@@ -126,7 +125,27 @@ export default class Statistics extends Vue {
     this.$store.commit('fetchRecordList');
   }
 
-  type = '支出'
+  show(value: boolean) {
+    return value
+  }
+
+  start() {
+    this.startTime = dayjs(new Date());
+  }
+
+  end(event: TouchEvent) {
+    this.endTime = dayjs(new Date());
+    this.time = this.endTime.diff(this.startTime);
+    if (this.time && this.time >= 3000) {
+      this.$store.commit('deleteRecord', event.target!.getAttribute('ownValue'))
+    }
+  }
+
+  type = '支出';
+  startTime: any;
+  endTime: any;
+  time: number | undefined;
+
 }
 </script>
 

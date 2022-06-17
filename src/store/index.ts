@@ -43,6 +43,14 @@ const store = new Vuex.Store({
             const choicesItem = clone(state.myChoices);
             window.localStorage.setItem('choicesItem', JSON.stringify(choicesItem));
         },
+        deleteRecord(state, value) {
+            for (let i = 0; i < state.recordList.length; i++) {
+                if (value === state.recordList[i].createAt) {
+                    state.recordList.splice(i, 1);
+                    store.commit('saveRecordList')
+                }
+            }
+        }
     },
 });
 
